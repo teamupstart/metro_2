@@ -8,41 +8,43 @@ module Metro2
     end
 
     def header
-      if @file_contents.header.respond_to?(:activity_date)
-        activity_date = @file_contents.header.activity_date
-      else
-        activity_date = Date.today.strftime('%m%d%Y')
-      end
-      if @file_contents.header.respond_to?(:created_date)
-        created_date = @file_contents.header.created_date
-      else
-        created_date = Date.today.strftime('%m%d%Y')
-      end
+      contents = []
 
       # Block Descriptor Word not used when reporting fixed length records
-      numeric_field(@file_contents.records.size.to_s, 4) + # record descriptor word
-      alphanumeric_field('HEADER', 6) + # record identifier
-      alphanumeric_field(@file_contents.header.cycle_number.to_s, 2) + # cycle number
-      alphanumeric_field(@file_contents.header.innovis_program_identifier, 10) + # Innovis program identfier
-      alphanumeric_field(@file_contents.header.equifax_program_identifier, 10) + # Equifax program identfier
-      alphanumeric_field(@file_contents.header.experian_program_identifier, 5) + # Experian program identfier
-      alphanumeric_field(@file_contents.header.transunion_program_identifier, 10) + # Transunion program identfier
-      numeric_field(activity_date, 8) + # Activity date
-      numeric_field(created_date, 8) + # Date created
-      numeric_field(@file_contents.header.program_date, 8) + # Program date
-      numeric_field(@file_contents.header.program_revision_date || '01', 8) + # Program revision date
-      alphanumeric_field(@file_contents.header.reporter_name, 40) + # Reporter name
-      alphanumeric_field(@file_contents.header.reporter_address, 96) + # Reporter address
-      numeric_field(@file_contents.header.reporter_telephone_number, 10) + # Reporter telephone number
-      alphanumeric_field(@file_contents.header.software_vendor_name, 40) + # Software vendor name
-      alphanumeric_field(@file_contents.header.software_version_number, 5) + # Software vendor name
-      alphanumeric_field(nil, 156) # reserved - blank fill
+      contents << numeric_field(@file_contents.records.size.to_s, 4) # record descriptor word
+      contents << alphanumeric_field('HEADER', 6) # record identifier
+      contents << alphanumeric_field(@file_contents.header.cycle_number.to_s, 2) # cycle number
+      contents << alphanumeric_field(@file_contents.header.innovis_program_identifier, 10) # Innovis program identfier
+      contents << alphanumeric_field(@file_contents.header.equifax_program_identifier, 10) # Equifax program identfier
+      contents << alphanumeric_field(@file_contents.header.experian_program_identifier, 5) # Experian program identfier
+      contents << alphanumeric_field(@file_contents.header.transunion_program_identifier, 10) # Transunion program identfier
+      contents << numeric_field(@file_contents.header.activity_date.strftime('%m%d%Y'), 8) # Activity date
+      contents << numeric_field(@file_contents.header.created_date.strftime('%m%d%Y'), 8) # Date created
+      contents << numeric_field(@file_contents.header.program_date.strftime('%m%d%Y'), 8) # Program date
+      contents << numeric_field(program_revision_date, 8)
+      contents << alphanumeric_field(@file_contents.header.reporter_name, 40) # Reporter name
+      contents << alphanumeric_field(@file_contents.header.reporter_address, 96) # Reporter address
+      contents << numeric_field(@file_contents.header.reporter_telephone_number, 10) # Reporter telephone number
+      contents << alphanumeric_field(@file_contents.header.software_vendor_name, 40) # Software vendor name
+      contents << alphanumeric_field(@file_contents.header.software_version_number, 5) # Software vendor name
+      contents << alphanumeric_field(nil, 156) # reserved - blank fill
+      contents.join
     end
 
     private
 
+    def program_revision_date
+      # Program revision date (01 if not modified)
+      if @file_contents.header.program_revision_date
+        @file_contents.header.program_revision_date.strftime('%m%d%Y')
+      else
+        '01'
+      end
+    end
+
     def alphanumeric_field(field_contents, required_length)
-      unless !!(field_contents =~ /\A([[:alnum:]]|\s)+\z/x) # must be alphanumeric (spaces ok)
+      # must be alphanumeric (spaces ok)
+      unless field_contents.blank? || !!(field_contents =~ /\A([[:alnum:]]|\s)+\z/x)
         raise ArgumentError.new("Content must be alphanumeric (#{field_contents})")
       end
 
