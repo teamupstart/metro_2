@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.name          = "metro_2"
   spec.version       = Metro2::VERSION
   spec.authors       = ["Brian Mascarenhas"]
-  spec.email         = ["brian@brianmascarenhas.com"]
+  spec.email         = ["brian@upstart.com"]
   spec.summary       = "Create Metro 2 format files for credit reporting"
   spec.description   = "Create Metro 2 format files for credit reporting"
   spec.homepage      = ""
