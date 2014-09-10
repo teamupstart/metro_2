@@ -2,7 +2,7 @@ require "metro_2/version"
 require "date"
 
 module Metro2
-  class File
+  class Metro2File
     def initialize(file_contents)
       @file_contents = file_contents
     end
@@ -35,20 +35,23 @@ module Metro2
 
     def program_revision_date
       # Program revision date (01 if not modified)
-      if @file_contents.header.program_revision_date
-        @file_contents.header.program_revision_date.strftime('%m%d%Y')
+      revision_date = @file_contents.header.program_revision_date
+      if revision_date
+        revision_date.strftime('%m%d%Y')
       else
         '01'
       end
     end
 
     def alphanumeric_field(field_contents, required_length)
+      return ' ' * required_length  if field_contents.blank?
+
+      field_contents = field_contents.to_s
+
       # must be alphanumeric (spaces ok)
-      unless field_contents.blank? || !!(field_contents =~ /\A([[:alnum:]]|\s)+\z/x)
+      unless !!(field_contents =~ /\A([[:alnum:]]|\s)+\z/x)
         raise ArgumentError.new("Content must be alphanumeric (#{field_contents})")
       end
-
-      return ' ' * required_length  unless field_contents
 
       # Left justified and blank-filled
       if field_contents.size > required_length
@@ -60,11 +63,13 @@ module Metro2
 
     def numeric_field(field_contents, required_length)
       # Right justified and zero-filled
-      return '0' * required_length unless field_contents
+      return '0' * required_length if field_contents.blank?
 
       unless is_numeric?(field_contents)
         raise ArgumentError.new("field (#{field_contents}) must be numeric")
       end
+
+      field_contents = field_contents.to_s
 
       if field_contents.size > required_length
         raise ArgumentError.new("numeric field (#{field_contents}) is too long (max #{required_length})")
@@ -81,7 +86,11 @@ module Metro2
     end
 
     def is_numeric?(str)
-      true if Float(str) rescue false
+      begin
+        true if Float(str)
+      rescue ArgumentError
+        false
+      end
     end
   end
 end
