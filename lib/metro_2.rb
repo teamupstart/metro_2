@@ -1,5 +1,4 @@
 require "metro_2/version"
-require "date"
 
 module Metro2
   class Metro2File
@@ -44,16 +43,16 @@ module Metro2
     end
 
     def alphanumeric_field(field_contents, required_length)
-      return ' ' * required_length  if field_contents.blank?
-
+      # Left justified and blank-filled
       field_contents = field_contents.to_s
+
+      return ' ' * required_length  if field_contents.empty?
 
       # must be alphanumeric (spaces ok)
       unless !!(field_contents =~ /\A([[:alnum:]]|\s)+\z/x)
         raise ArgumentError.new("Content must be alphanumeric (#{field_contents})")
       end
 
-      # Left justified and blank-filled
       if field_contents.size > required_length
         field_contents[0..(required_length-1)]
       else
@@ -61,28 +60,29 @@ module Metro2
       end
     end
 
-    def numeric_field(field_contents, required_length)
+    def numeric_field(field_contents, required_length, is_monetary_field=false)
       # Right justified and zero-filled
-      return '0' * required_length if field_contents.blank?
+      field_contents = field_contents.to_s
+
+      return '0' * required_length if field_contents.empty?
 
       unless is_numeric?(field_contents)
         raise ArgumentError.new("field (#{field_contents}) must be numeric")
       end
 
-      field_contents = field_contents.to_s
+      decimal_index = field_contents.index('.')
+      field_contents = field_contents[0..decimal_index-1] if decimal_index
 
+      return '9' * required_length if is_monetary_field && field_contents.to_f >= 1000000000
       if field_contents.size > required_length
         raise ArgumentError.new("numeric field (#{field_contents}) is too long (max #{required_length})")
       end
 
-      ('0' * (required_length - field_contents.size)) + field_contents.to_s
+      ('0' * (required_length - field_contents.size)) + field_contents
     end
 
     def monetary_field(field_contents, required_length)
-      # Nine filled if value is greater than 1 billion
-      return '9' * required_length if field_contents > 1000000000
-
-      numeric_field(field_contents, required_length)
+      numeric_field(field_contents, required_length, true)
     end
 
     def is_numeric?(str)
