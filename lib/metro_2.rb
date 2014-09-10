@@ -49,7 +49,7 @@ module Metro2
       return ' ' * required_length  if field_contents.empty?
 
       # must be alphanumeric (spaces ok)
-      unless !!(field_contents =~ /\A([[:alnum:]]|\s)+\z/x)
+      unless is_alphanumeric?(field_contents)
         raise ArgumentError.new("Content must be alphanumeric (#{field_contents})")
       end
 
@@ -86,11 +86,11 @@ module Metro2
     end
 
     def is_numeric?(str)
-      begin
-        true if Float(str)
-      rescue ArgumentError
-        false
-      end
+      !!(str =~ /\A\d+\.?\d*\z/)
+    end
+
+    def is_alphanumeric?(str)
+      !!(str =~ /\A([[:alnum:]]|\s)+\z/x)
     end
   end
 end
