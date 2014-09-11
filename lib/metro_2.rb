@@ -11,9 +11,9 @@ module Metro2
       contents = []
 
       # Block Descriptor Word not used when reporting fixed length records
-      contents << numeric_field(@file_contents.records.size.to_s, 4) # record descriptor word
+      contents << numeric_field(426, 4) # record descriptor word
       contents << alphanumeric_field('HEADER', 6) # record identifier
-      contents << alphanumeric_field(header_contents.cycle_number.to_s, 2) # cycle number
+      contents << alphanumeric_field(header_contents.cycle_number, 2) # cycle number
       contents << alphanumeric_field(header_contents.innovis_program_identifier, 10) # Innovis program identfier
       contents << alphanumeric_field(header_contents.equifax_program_identifier, 10) # Equifax program identfier
       contents << alphanumeric_field(header_contents.experian_program_identifier, 5) # Experian program identfier
@@ -29,6 +29,60 @@ module Metro2
       contents << alphanumeric_field(header_contents.software_version_number, 5) # Software vendor name
       contents << alphanumeric_field(nil, 156) # reserved - blank fill
       contents.join
+    end
+
+    def record(record_contents)
+      contents = []
+
+      # Block Descriptor Word not used when reporting fixed length records
+      contents << numeric_field(426, 4) # record descriptor word
+      contents << alphanumeric_field(1, 1) # processing indicator (always 1)
+      contents << numeric_field(record_contents.time_stamp, 14)
+      contents << alphanumeric_field(record_contents.correction_indicator, 1)
+      contents << alphanumeric_field(record_contents.identification_number, 20)
+      contents << alphanumeric_field(record_contents.cycle_number, 2)
+      contents << alphanumeric_field(record_contents.consumer_account_number, 30)
+      contents << alphanumeric_field(record_contents.portfolio_type, 1)
+      contents << alphanumeric_field(record_contents.account_type, 2)
+      contents << numeric_field(record_contents.date_opened, 8)
+      contents << numeric_field(record_contents.credit_limit, 9)
+      contents << numeric_field(record_contents.highest_credit_or_loan_amount, 9)
+      contents << alphanumeric_field(record_contents.terms_duration, 3)
+      contents << alphanumeric_field(record_contents.terms_frequency, 1)
+      contents << numeric_field(record_contents.scheduled_monthly_payment_amount, 9)
+      contents << numeric_field(record_contents.actual_payment_amount, 9)
+      contents << alphanumeric_field(record_contents.account_status, 2)
+      contents << alphanumeric_field(record_contents.payment_rating, 1)
+      contents << alphanumeric_field(record_contents.payment_history_profile, 24)
+      contents << alphanumeric_field(record_contents.special_comment, 2)
+      contents << alphanumeric_field(record_contents.compliance_condition_code, 2)
+      contents << numeric_field(record_contents.current_balance, 9)
+      contents << numeric_field(record_contents.amount_past_due, 9)
+      contents << numeric_field(record_contents.original_charge_off_amount, 9)
+      contents << numeric_field(record_contents.account_information_date, 8)
+      contents << numeric_field(record_contents.first_delinquency_date, 8)
+      contents << numeric_field(record_contents.closed_date, 8)
+      contents << numeric_field(record_contents.last_payment_date, 8)
+      contents << alphanumeric_field(record_contents.interest_type_indicator, 1)
+      contents << alphanumeric_field(nil, 16) # reserved - blank fill
+      contents << alphanumeric_field(record_contents.consumer_transaction_type, 1)
+      contents << alphanumeric_field(record_contents.surname, 25)
+      contents << alphanumeric_field(record_contents.first_name, 20)
+      contents << alphanumeric_field(record_contents.middle_name, 20)
+      contents << alphanumeric_field(record_contents.generation_code, 1)
+      contents << numeric_field(record_contents.social_security_number, 9)
+      contents << numeric_field(record_contents.date_of_birth, 8)
+      contents << numeric_field(record_contents.telephone_number, 10)
+      contents << alphanumeric_field(record_contents.ecoa_code, 1)
+      contents << alphanumeric_field(record_contents.consumer_information_indicator, 2)
+      contents << alphanumeric_field(record_contents.country_code, 2)
+      contents << alphanumeric_field(record_contents.address_1, 32)
+      contents << alphanumeric_field(record_contents.address_2, 32)
+      contents << alphanumeric_field(record_contents.city, 20)
+      contents << alphanumeric_field(record_contents.state, 2)
+      contents << alphanumeric_field(record_contents.postal_code, 9)
+      contents << alphanumeric_field(record_contents.address_indicator, 1)
+      contents << alphanumeric_field(record_contents.residence_code, 1)
     end
 
     private
