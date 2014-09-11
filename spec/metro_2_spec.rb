@@ -44,6 +44,14 @@ describe Metro2::Metro2File do
     it 'should raise an error when input contains symbols' do
       expect{m2f.send(:alphanumeric_field, 'he@der', 6)}.to raise_error(ArgumentError)
     end
+
+    it 'should return the input when input is only alphas and dashes and equal to max length' do
+      expect(m2f.send(:alphanumeric_field, 'he-der', 6, 1)).to eql('he-der')
+    end
+
+    it 'should return the input when input is only alphas and dashes and equal to max length' do
+      expect(m2f.send(:alphanumeric_field, 'h\/-.r', 6, 2)).to eql('h\/-.r')
+    end
   end
 
   describe 'numeric_field' do

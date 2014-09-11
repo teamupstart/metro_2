@@ -31,20 +31,32 @@ module Metro2
       contents.join
     end
 
+    def records
+      records = @file_contents.records
+
+      records.map{ |r| record(r) }.join('\n')
+    end
+
+    private
+
+    ALPHANUMERIC = 0
+    ALPHANUMERIC_PLUS_DASH = 1
+    ALPHANUMERIC_PLUS_DOT_DASH_SLASH = 2
+
     def record(record_contents)
       contents = []
 
       # Block Descriptor Word not used when reporting fixed length records
       contents << numeric_field(426, 4) # record descriptor word
       contents << alphanumeric_field(1, 1) # processing indicator (always 1)
-      contents << numeric_field(record_contents.time_stamp, 14)
+      contents << numeric_field(record_contents.time_stamp.strftime('%m%d%Y%H%M%S'), 14)
       contents << alphanumeric_field(record_contents.correction_indicator, 1)
       contents << alphanumeric_field(record_contents.identification_number, 20)
       contents << alphanumeric_field(record_contents.cycle_number, 2)
       contents << alphanumeric_field(record_contents.consumer_account_number, 30)
       contents << alphanumeric_field(record_contents.portfolio_type, 1)
       contents << alphanumeric_field(record_contents.account_type, 2)
-      contents << numeric_field(record_contents.date_opened, 8)
+      contents << date_field(record_contents.date_opened, 8)
       contents << numeric_field(record_contents.credit_limit, 9)
       contents << numeric_field(record_contents.highest_credit_or_loan_amount, 9)
       contents << alphanumeric_field(record_contents.terms_duration, 3)
@@ -59,33 +71,31 @@ module Metro2
       contents << numeric_field(record_contents.current_balance, 9)
       contents << numeric_field(record_contents.amount_past_due, 9)
       contents << numeric_field(record_contents.original_charge_off_amount, 9)
-      contents << numeric_field(record_contents.account_information_date, 8)
-      contents << numeric_field(record_contents.first_delinquency_date, 8)
-      contents << numeric_field(record_contents.closed_date, 8)
-      contents << numeric_field(record_contents.last_payment_date, 8)
+      contents << date_field(record_contents.account_information_date, 8)
+      contents << date_field(record_contents.first_delinquency_date, 8)
+      contents << date_field(record_contents.closed_date, 8)
+      contents << date_field(record_contents.last_payment_date, 8)
       contents << alphanumeric_field(record_contents.interest_type_indicator, 1)
       contents << alphanumeric_field(nil, 16) # reserved - blank fill
       contents << alphanumeric_field(record_contents.consumer_transaction_type, 1)
-      contents << alphanumeric_field(record_contents.surname, 25)
-      contents << alphanumeric_field(record_contents.first_name, 20)
-      contents << alphanumeric_field(record_contents.middle_name, 20)
+      contents << alphanumeric_field(record_contents.surname, 25, ALPHANUMERIC_PLUS_DASH)
+      contents << alphanumeric_field(record_contents.first_name, 20, ALPHANUMERIC_PLUS_DASH)
+      contents << alphanumeric_field(record_contents.middle_name, 20, ALPHANUMERIC_PLUS_DASH)
       contents << alphanumeric_field(record_contents.generation_code, 1)
       contents << numeric_field(record_contents.social_security_number, 9)
-      contents << numeric_field(record_contents.date_of_birth, 8)
+      contents << date_field(record_contents.date_of_birth, 8)
       contents << numeric_field(record_contents.telephone_number, 10)
       contents << alphanumeric_field(record_contents.ecoa_code, 1)
       contents << alphanumeric_field(record_contents.consumer_information_indicator, 2)
       contents << alphanumeric_field(record_contents.country_code, 2)
-      contents << alphanumeric_field(record_contents.address_1, 32)
-      contents << alphanumeric_field(record_contents.address_2, 32)
+      contents << alphanumeric_field(record_contents.address_1, 32, ALPHANUMERIC_PLUS_DOT_DASH_SLASH)
+      contents << alphanumeric_field(record_contents.address_2, 32, ALPHANUMERIC_PLUS_DOT_DASH_SLASH)
       contents << alphanumeric_field(record_contents.city, 20)
       contents << alphanumeric_field(record_contents.state, 2)
       contents << alphanumeric_field(record_contents.postal_code, 9)
       contents << alphanumeric_field(record_contents.address_indicator, 1)
       contents << alphanumeric_field(record_contents.residence_code, 1)
     end
-
-    private
 
     def program_revision_date
       # Program revision date (01 if not modified)
@@ -97,15 +107,14 @@ module Metro2
       end
     end
 
-    def alphanumeric_field(field_contents, required_length)
+    def alphanumeric_field(field_contents, required_length, allow=ALPHANUMERIC)
       # Left justified and blank-filled
       field_contents = field_contents.to_s
 
       return ' ' * required_length  if field_contents.empty?
 
-      # must be alphanumeric (spaces ok)
-      unless is_alphanumeric?(field_contents)
-        raise ArgumentError.new("Content must be alphanumeric (#{field_contents})")
+      unless has_correct_characters?(field_contents, allow)
+        raise ArgumentError.new("Content (#{field_contents}) contains invalid characters")
       end
 
       if field_contents.size > required_length
@@ -140,12 +149,25 @@ module Metro2
       numeric_field(field_contents, required_length, true)
     end
 
+    def date_field(field_contents, required_length)
+      field_contents = field_contents.strftime('%m%d%Y') if field_contents
+      numeric_field(field_contents, required_length, true)
+    end
+
     def is_numeric?(str)
       !!(str =~ /\A\d+\.?\d*\z/)
     end
 
-    def is_alphanumeric?(str)
-      !!(str =~ /\A([[:alnum:]]|\s)+\z/x)
+    def has_correct_characters?(str, allow)
+      case allow
+      when ALPHANUMERIC
+        # must be alphanumeric with spaces
+        !!(str =~ /\A([[:alnum:]]|\s)+\z/x)
+      when ALPHANUMERIC_PLUS_DASH
+        !!(str =~ /\A([[:alnum:]]|\s|\-)+\z/x)
+      when ALPHANUMERIC_PLUS_DOT_DASH_SLASH
+        !!(str =~ /\A([[:alnum:]]|\s|\-|\.|\\|\/)+\z/x)
+      end
     end
   end
 end
