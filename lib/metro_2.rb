@@ -95,6 +95,7 @@ module Metro2
       contents << alphanumeric_field(record_contents.postal_code, 9)
       contents << alphanumeric_field(record_contents.address_indicator, 1)
       contents << alphanumeric_field(record_contents.residence_code, 1)
+      contents.join
     end
 
     def program_revision_date
