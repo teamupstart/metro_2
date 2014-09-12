@@ -13,20 +13,20 @@ module Metro2
       # Block Descriptor Word not used when reporting fixed length records
       contents << numeric_field(426, 4) # record descriptor word
       contents << alphanumeric_field('HEADER', 6) # record identifier
-      contents << alphanumeric_field(header_contents.cycle_number, 2) # cycle number
-      contents << alphanumeric_field(header_contents.innovis_program_identifier, 10) # Innovis program identfier
-      contents << alphanumeric_field(header_contents.equifax_program_identifier, 10) # Equifax program identfier
-      contents << alphanumeric_field(header_contents.experian_program_identifier, 5) # Experian program identfier
-      contents << alphanumeric_field(header_contents.transunion_program_identifier, 10) # Transunion program identfier
-      contents << numeric_field(header_contents.activity_date.strftime('%m%d%Y'), 8) # Activity date
-      contents << numeric_field(header_contents.created_date.strftime('%m%d%Y'), 8) # Date created
-      contents << numeric_field(header_contents.program_date.strftime('%m%d%Y'), 8) # Program date
+      contents << alphanumeric_field(header_contents.cycle_number, 2)
+      contents << alphanumeric_field(header_contents.innovis_program_identifier, 10)
+      contents << alphanumeric_field(header_contents.equifax_program_identifier, 10)
+      contents << alphanumeric_field(header_contents.experian_program_identifier, 5)
+      contents << alphanumeric_field(header_contents.transunion_program_identifier, 10)
+      contents << numeric_field(header_contents.activity_date.strftime('%m%d%Y'), 8)
+      contents << numeric_field(header_contents.created_date.strftime('%m%d%Y'), 8)
+      contents << numeric_field(header_contents.program_date.strftime('%m%d%Y'), 8)
       contents << numeric_field(program_revision_date, 8)
-      contents << alphanumeric_field(header_contents.reporter_name, 40) # Reporter name
-      contents << alphanumeric_field(header_contents.reporter_address, 96) # Reporter address
-      contents << numeric_field(header_contents.reporter_telephone_number, 10) # Reporter telephone number
-      contents << alphanumeric_field(header_contents.software_vendor_name, 40) # Software vendor name
-      contents << alphanumeric_field(header_contents.software_version_number, 5) # Software vendor name
+      contents << alphanumeric_field(header_contents.reporter_name, 40)
+      contents << alphanumeric_field(header_contents.reporter_address, 96)
+      contents << numeric_field(header_contents.reporter_telephone_number, 10)
+      contents << alphanumeric_field(header_contents.software_vendor_name, 40)
+      contents << alphanumeric_field(header_contents.software_version_number, 5)
       contents << alphanumeric_field(nil, 156) # reserved - blank fill
       contents.join
     end
