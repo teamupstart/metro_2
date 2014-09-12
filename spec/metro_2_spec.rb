@@ -46,11 +46,11 @@ describe Metro2::Metro2File do
     end
 
     it 'should return the input when input is only alphas and dashes and equal to max length' do
-      expect(m2f.send(:alphanumeric_field, 'he-der', 6, 1)).to eql('he-der')
+      expect(m2f.send(:alphanumeric_field, 'he-der', 6, Metro2::Metro2File::ALPHANUMERIC_PLUS_DASH)).to eql('he-der')
     end
 
     it 'should return the input when input is only alphas and dashes and equal to max length' do
-      expect(m2f.send(:alphanumeric_field, 'h\/-.r', 6, 2)).to eql('h\/-.r')
+      expect(m2f.send(:alphanumeric_field, 'h\/-.r', 6, Metro2::Metro2File::ALPHANUMERIC_PLUS_DOT_DASH_SLASH)).to eql('h\/-.r')
     end
   end
 
