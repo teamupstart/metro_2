@@ -2,6 +2,14 @@ require "metro_2/version"
 
 module Metro2
   class Metro2File
+
+    FIXED_LENGTH = 426
+
+    ALPHANUMERIC = 0
+    ALPHANUMERIC_PLUS_DASH = 1
+    ALPHANUMERIC_PLUS_DOT_DASH_SLASH = 2
+
+
     def initialize(file_contents)
       @file_contents = file_contents
     end
@@ -11,7 +19,7 @@ module Metro2
       contents = []
 
       # Block Descriptor Word not used when reporting fixed length records
-      contents << numeric_field(426, 4) # record descriptor word
+      contents << numeric_field(FIXED_LENGTH, 4) # record descriptor word
       contents << alphanumeric_field('HEADER', 6) # record identifier
       contents << alphanumeric_field(header_contents.cycle_number, 2)
       contents << alphanumeric_field(header_contents.innovis_program_identifier, 10)
@@ -34,20 +42,14 @@ module Metro2
     def records
       records = @file_contents.records
 
-      records.map{ |r| record(r) }.join('\n')
+      records.map { |r| record(r) }.join('\n')
     end
-
-    private
-
-    ALPHANUMERIC = 0
-    ALPHANUMERIC_PLUS_DASH = 1
-    ALPHANUMERIC_PLUS_DOT_DASH_SLASH = 2
 
     def record(record_contents)
       contents = []
 
       # Block Descriptor Word not used when reporting fixed length records
-      contents << numeric_field(426, 4) # record descriptor word
+      contents << numeric_field(FIXED_LENGTH, 4) # record descriptor word
       contents << alphanumeric_field(1, 1) # processing indicator (always 1)
       contents << numeric_field(record_contents.time_stamp.strftime('%m%d%Y%H%M%S'), 14)
       contents << alphanumeric_field(record_contents.correction_indicator, 1)
@@ -108,13 +110,13 @@ module Metro2
       end
     end
 
-    def alphanumeric_field(field_contents, required_length, allow=ALPHANUMERIC)
+    def alphanumeric_field(field_contents, required_length, permitted_chars = ALPHANUMERIC)
       # Left justified and blank-filled
       field_contents = field_contents.to_s
 
       return ' ' * required_length  if field_contents.empty?
 
-      unless has_correct_characters?(field_contents, allow)
+      unless has_correct_characters?(field_contents, permitted_chars)
         raise ArgumentError.new("Content (#{field_contents}) contains invalid characters")
       end
 
@@ -159,15 +161,17 @@ module Metro2
       !!(str =~ /\A\d+\.?\d*\z/)
     end
 
-    def has_correct_characters?(str, allow)
-      case allow
+    def has_correct_characters?(str, permitted_chars)
+      case permitted_chars
       when ALPHANUMERIC
         # must be alphanumeric with spaces
-        !!(str =~ /\A([[:alnum:]]|\s)+\z/x)
+        !!(str =~ /\A([[:alnum:]]|\s)+\z/)
       when ALPHANUMERIC_PLUS_DASH
-        !!(str =~ /\A([[:alnum:]]|\s|\-)+\z/x)
+        !!(str =~ /\A([[:alnum:]]|\s|\-)+\z/)
       when ALPHANUMERIC_PLUS_DOT_DASH_SLASH
-        !!(str =~ /\A([[:alnum:]]|\s|\-|\.|\\|\/)+\z/x)
+        !!(str =~ /\A([[:alnum:]]|\s|\-|\.|\\|\/)+\z/)
+      else
+        raise ArgumentError.new("unknown permitted character type (#{permitted_chars})")
       end
     end
   end
