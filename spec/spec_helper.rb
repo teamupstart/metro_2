@@ -1,5 +1,5 @@
 require 'bundler/setup'
-Bundler.setup
+Bundler.require
 
 require 'metro_2'
 

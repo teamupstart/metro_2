@@ -135,7 +135,40 @@ module Metro2
     end
 
     def date_field(name)
-      numeric_field(name, 8)
+      fields << name
+
+      # getter
+      define_method name do
+        instance_variable_get( "@#{name}" )
+      end
+
+      # setter (includes validations)
+      define_method "#{name}=" do | val |
+        instance_variable_set( "@#{name}", val )
+      end
+
+      # to_metro2
+      define_method  "#{name}_to_metro2" do
+        required_length = 8
+        # Right justified and zero-filled
+        val = instance_variable_get( "@#{name}" )
+        val = val.strftime('%m%d%Y')
+
+        return '0' * required_length if val.empty?
+
+        unless !!(val =~ Metro2::NUMERIC)
+          raise ArgumentError.new("field (#{val}) must be numeric")
+        end
+
+        decimal_index = val.index('.')
+        val = val[0..decimal_index-1] if decimal_index
+
+        if val.size > required_length
+          raise ArgumentError.new("numeric field (#{val}) is too long (max #{required_length})")
+        end
+
+        ('0' * (required_length - val.size)) + val
+      end
     end
   end
 
