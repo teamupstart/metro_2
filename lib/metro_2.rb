@@ -12,7 +12,7 @@ module Metro2
 end
 
 require 'metro_2/fields'
-
+require 'metro_2/metro2_file'
 
 # Require records files
 require 'metro_2/records/record'
