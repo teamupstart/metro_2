@@ -20,7 +20,7 @@ module Metro2
       @trailer ||= trailer_from_base_segments
       segments << @trailer
 
-      segments.collect { |r| r.to_metro2 }.join("\r\n") + "\r\n"
+      segments.collect { |r| r.to_metro2 }.join("\n") + "\n"
     end
 
     def trailer_from_base_segments
