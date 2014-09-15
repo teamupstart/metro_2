@@ -2,7 +2,7 @@ module Metro2::Records
   class HeaderSegment < Record
     @fields = []
 
-    numeric_const_field :record_descriptor_word, 4, Metro2::Fields::FIXED_LENGTH
+    numeric_const_field :record_descriptor_word, 4, Metro2::FIXED_LENGTH
     alphanumeric_const_field :record_identifier, 6, 'HEADER'
     alphanumeric_field :cycle_number, 2
     alphanumeric_field :innovis_program_identifier, 10

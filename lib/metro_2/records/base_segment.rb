@@ -2,7 +2,7 @@ module Metro2::Records
   class BaseSegment < Record
     @fields = []
 
-    numeric_const_field :record_descriptor_word, 4, Metro2::Fields::FIXED_LENGTH
+    numeric_const_field :record_descriptor_word, 4, Metro2::FIXED_LENGTH
     alphanumeric_const_field :processing_indicator, 1, 1 # always 1
     numeric_field :time_stamp, 14
     alphanumeric_field :correction_indicator, 1
@@ -33,9 +33,9 @@ module Metro2::Records
     alphanumeric_field :interest_type_indicator, 1
     alphanumeric_const_field :reserved, 16, nil # reserved - blank fill
     alphanumeric_field :consumer_transaction_type, 1
-    alphanumeric_field :surname, 25, Metro2::Fields::ALPHANUMERIC_PLUS_DASH
-    alphanumeric_field :first_name, 20, Metro2::Fields::ALPHANUMERIC_PLUS_DASH
-    alphanumeric_field :middle_name, 20, Metro2::Fields::ALPHANUMERIC_PLUS_DASH
+    alphanumeric_field :surname, 25, Metro2::ALPHANUMERIC_PLUS_DASH
+    alphanumeric_field :first_name, 20, Metro2::ALPHANUMERIC_PLUS_DASH
+    alphanumeric_field :middle_name, 20, Metro2::ALPHANUMERIC_PLUS_DASH
     alphanumeric_field :generation_code, 1
     numeric_field :social_security_number, 9
     date_field :date_of_birth
@@ -43,8 +43,8 @@ module Metro2::Records
     alphanumeric_field :ecoa_code, 1
     alphanumeric_field :consumer_information_indicator, 2
     alphanumeric_field :country_code, 2
-    alphanumeric_field :address_1, 32, Metro2::Fields::ALPHANUMERIC_PLUS_DOT_DASH_SLASH
-    alphanumeric_field :address_2, 32, Metro2::Fields::ALPHANUMERIC_PLUS_DOT_DASH_SLASH
+    alphanumeric_field :address_1, 32, Metro2::ALPHANUMERIC_PLUS_DOT_DASH_SLASH
+    alphanumeric_field :address_2, 32, Metro2::ALPHANUMERIC_PLUS_DOT_DASH_SLASH
     alphanumeric_field :city, 20
     alphanumeric_field :state, 2
     alphanumeric_field :postal_code, 9

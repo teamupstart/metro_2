@@ -1,14 +1,7 @@
 module Metro2
   module Fields
 
-    ALPHANUMERIC = /\A([[:alnum:]]|\s)+\z/
-    ALPHANUMERIC_PLUS_DASH = /\A([[:alnum:]]|\s|\-)+\z/
-    ALPHANUMERIC_PLUS_DOT_DASH_SLASH = /\A([[:alnum:]]|\s|\-|\.|\\|\/)+\z/
-    NUMERIC = /\A\d+\.?\d*\z/
-
-    FIXED_LENGTH = 426
-
-    def alphanumeric_field(name, required_length, permitted_chars = ALPHANUMERIC)
+    def alphanumeric_field(name, required_length, permitted_chars = Metro2::ALPHANUMERIC)
       fields << name
 
       # getter
@@ -62,7 +55,7 @@ module Metro2
 
         return '0' * required_length if val.empty?
 
-        unless !!(val =~ NUMERIC)
+        unless !!(val =~ Metro2::NUMERIC)
           raise ArgumentError.new("field (#{val}) must be numeric")
         end
 
@@ -78,7 +71,7 @@ module Metro2
       end
     end
 
-    def alphanumeric_const_field(name, required_length, val, permitted_chars = ALPHANUMERIC)
+    def alphanumeric_const_field(name, required_length, val, permitted_chars = Metro2::ALPHANUMERIC)
       fields << name
 
       # getter
@@ -121,7 +114,7 @@ module Metro2
 
         return '0' * required_length if val.empty?
 
-        unless !!(val =~ NUMERIC)
+        unless !!(val =~ Metro2::NUMERIC)
           raise ArgumentError.new("field (#{val}) must be numeric")
         end
 
