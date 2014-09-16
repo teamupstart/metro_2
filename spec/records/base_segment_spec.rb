@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Metro2::Records::BaseSegment do
-  before(:each) do
+  before do
     @base = Metro2::Records::BaseSegment.new
     @base.time_stamp = Time.new(2014, 9, 15, 17, 7, 45).strftime('%m%d%Y%H%M%S')
     @base.identification_number = 'REPORTERXYZ'
@@ -37,7 +37,7 @@ describe Metro2::Records::BaseSegment do
     @base.residence_code = 'O'
   end
 
-  describe '#to_metro2' do
+  context '#to_metro2' do
     it 'should generate base segment string' do
       exp = [
         '0426',
@@ -93,6 +93,68 @@ describe Metro2::Records::BaseSegment do
       base_str = @base.to_metro2
       expect(base_str).to eql(exp.join(''))
       expect(base_str.size).to eql(Metro2::FIXED_LENGTH)
+    end
+  end
+
+  context 'alphanumerics' do
+    describe 'alphanumeric with symbols' do
+      it 'should raise an error' do
+        @base.surname = 'B@d name'
+        expect{@base.surname_to_metro2}.to raise_error(ArgumentError)
+      end
+    end
+
+    describe 'alphanumeric with dashes' do
+      it 'should not raise an error' do
+        @base.surname = 'Name A-ok'
+        expect{@base.surname_to_metro2}.not_to raise_error
+      end
+    end
+
+    describe 'really long alphanumeric' do
+      it 'should be truncated' do
+        @base.surname = 'Veryveryveryveryverylongname'
+        expect(@base.surname_to_metro2).to eql('Veryveryveryveryverylongn')
+      end
+    end
+
+    describe 'alphanumeric with dots and slashes' do
+      it 'should be truncated' do
+        @base.address_1 = 'Test Address /1.'
+        expect(@base.address_1_to_metro2).to eql('Test Address /1.'.ljust(32, ' '))
+      end
+    end
+  end
+
+  context 'numerics' do
+    describe 'numeric with alphas' do
+      it 'should raise an error' do
+        @base.telephone_number = 'abc5555555'
+        expect{@base.telephone_number_to_metro2}.to raise_error(ArgumentError)
+      end
+    end
+
+    describe 'numeric with symbols' do
+      it 'should raise an error' do
+        @base.telephone_number = '+555555555'
+        expect{@base.telephone_number_to_metro2}.to raise_error(ArgumentError)
+      end
+    end
+
+    describe 'numeric that is too long' do
+      it 'should raise an error' do
+        @base.telephone_number = '12345678901'
+        expect{@base.telephone_number_to_metro2}.to raise_error(ArgumentError)
+      end
+    end
+  end
+
+  context 'monetary field' do
+    describe 'more than one billion' do
+      it 'should fill with all 9s' do
+        @base.credit_limit = '1000000001'
+        expect(@base.credit_limit_to_metro2).to eql('999999999')
+      end
     end
   end
 end
