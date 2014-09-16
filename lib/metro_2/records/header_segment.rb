@@ -16,8 +16,8 @@ module Metro2::Records
     alphanumeric_field :reporter_name, 40
     alphanumeric_field :reporter_address, 96, Metro2::ALPHANUMERIC_PLUS_DOT_DASH_SLASH
     numeric_field :reporter_telephone_number, 10
-    alphanumeric_field :software_vendor_name, 40
-    alphanumeric_field :software_version_number, 5
+    alphanumeric_const_field :software_vendor_name, 40, 'Upstart Engineer metro 2 gem'
+    alphanumeric_const_field :software_version_number, 5, Metro2::version_string
     alphanumeric_const_field :reserved, 156, nil
   end
 end
