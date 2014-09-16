@@ -38,7 +38,9 @@ describe Metro2::Records::HeaderSegment do
         '2    ',
         ' ' * 156
       ]
-      expect(@header.to_metro2).to eql(exp.join(''))
+      header_str = @header.to_metro2
+      expect(header_str).to eql(exp.join(''))
+      expect(header_str.size).to eql(Metro2::FIXED_LENGTH)
     end
   end
 end

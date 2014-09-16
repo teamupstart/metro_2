@@ -152,7 +152,12 @@ module Metro2
         required_length = 8
         # Right justified and zero-filled
         val = instance_variable_get( "@#{name}" )
-        val = val.strftime('%m%d%Y')
+        if val
+          val = val.strftime('%m%d%Y')
+        else
+          val = val.to_s
+        end
+
 
         return '0' * required_length if val.empty?
 
