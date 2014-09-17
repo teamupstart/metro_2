@@ -57,5 +57,3 @@ require 'metro_2/records/record'
 Dir.new(File.dirname(__FILE__) + '/metro_2/records').each do |file|
   require('metro_2/records/' + File.basename(file)) if File.extname(file) == ".rb"
 end
-
-
