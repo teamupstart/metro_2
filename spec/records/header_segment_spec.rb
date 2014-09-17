@@ -13,8 +13,6 @@ describe Metro2::Records::HeaderSegment do
     @header.reporter_name = 'Credit Reporter'
     @header.reporter_address = '123 Report Dr Address CA 91111'
     @header.reporter_telephone_number = '5555555555'
-    @header.software_vendor_name = 'metro 2 gem'
-    @header.software_version_number = '2'
   end
 
   describe '#to_metro2' do
@@ -34,8 +32,8 @@ describe Metro2::Records::HeaderSegment do
         'Credit Reporter'.ljust(40, ' '),
         '123 Report Dr Address CA 91111'.ljust(96, ' '),
         '5555555555',
-        'metro 2 gem'.ljust(40, ' '),
-        '2    ',
+        'Upstart Engineer metro 2 gem'.ljust(40, ' '),
+        '00003',
         ' ' * 156
       ]
       header_str = @header.to_metro2
