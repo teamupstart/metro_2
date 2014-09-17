@@ -4,7 +4,7 @@ module Metro2::Records
 
     numeric_const_field :record_descriptor_word, 4, Metro2::FIXED_LENGTH
     alphanumeric_const_field :processing_indicator, 1, 1 # always 1
-    numeric_field :time_stamp, 14
+    timestamp_field :time_stamp
     numeric_field :correction_indicator, 1
     alphanumeric_field :identification_number, 20
     alphanumeric_field :cycle_number, 2

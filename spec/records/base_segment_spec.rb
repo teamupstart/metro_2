@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Metro2::Records::BaseSegment do
   before do
     @base = Metro2::Records::BaseSegment.new
-    @base.time_stamp = Time.new(2014, 9, 15, 17, 7, 45).strftime('%m%d%Y%H%M%S')
+    @base.time_stamp = Time.new(2014, 9, 15, 17, 7, 45)
     @base.identification_number = 'REPORTERXYZ'
     @base.cycle_number = 1
     @base.consumer_account_number = 'ABC123'
