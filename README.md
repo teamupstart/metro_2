@@ -1,6 +1,6 @@
 # Metro2
 
-TODO: Write a gem description
+Creates files in Metro 2 format for reporting to credit agencies
 
 ## Installation
 
@@ -20,7 +20,25 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+metro_2_content = Metro2::Metro2File.new
+metro_2_content.header.cycle_number = 15
+metro_2_content.header.equifax_program_identifier = 'EFAXID'
+metro_2_content.header.transunion_program_identifier = 'TRANSUNION'
+# ... other header segment attributes
+
+base_segment = Metro2::Records::BaseSegment.new
+base_segment.time_stamp = Time.new(2014, 9, 15, 17, 7, 45)
+base_segment.identification_number = 'REPORTERXYZ'
+base_segment.cycle_number = 1
+base_segment.consumer_account_number = 'ABC123'
+base_segment.portfolio_type = 'I'
+# ... other base segment attributes
+metro_2_content.base_segments << base_segment
+# add more base segments as needed
+
+metro_2_content.to_s # contents to write to file
+```
 
 ## Contributing
 
