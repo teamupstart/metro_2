@@ -35,6 +35,7 @@ base_segment.consumer_account_number = 'ABC123'
 base_segment.portfolio_type = 'I'
 # ... other base segment attributes
 metro_2_content.base_segments << base_segment
+# add more base segments as needed
 
 metro_2_content.to_s # contents to write to file
 ```
