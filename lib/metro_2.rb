@@ -37,8 +37,9 @@ module Metro2
     end
 
     decimal_index = val.index('.')
-    val = val[0..decimal_index-1] if decimal_index
+    val = val[0..(decimal_index - 1)] if decimal_index
 
+    # any value above 1 billion gets set to 999,999,999
     return '9' * required_length if is_monetary && val.to_f >= 1000000000
     if val.size > required_length
       raise ArgumentError.new("numeric field (#{val}) is too long (max #{required_length})")
