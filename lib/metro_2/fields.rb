@@ -6,17 +6,17 @@ module Metro2
 
       # getter
       define_method name do
-        instance_variable_get( "@#{name}" )
+        instance_variable_get("@#{name}")
       end
 
       # setter (includes validations)
       define_method "#{name}=" do | val |
-        instance_variable_set( "@#{name}", val )
+        instance_variable_set("@#{name}", val)
       end
 
       # to_metro2
       define_method "#{name}_to_metro2" do
-        val = instance_variable_get( "@#{name}" )
+        val = instance_variable_get("@#{name}")
         Metro2.alphanumeric_to_metro2(val, required_length, permitted_chars)
       end
     end
@@ -26,17 +26,17 @@ module Metro2
 
       # getter
       define_method name do
-        instance_variable_get( "@#{name}" )
+        instance_variable_get("@#{name}")
       end
 
       # setter (includes validations)
       define_method "#{name}=" do | val |
-        instance_variable_set( "@#{name}", val )
+        instance_variable_set("@#{name}", val)
       end
 
       # to_metro2
-      define_method  "#{name}_to_metro2" do
-        val = instance_variable_get( "@#{name}" )
+      define_method "#{name}_to_metro2" do
+        val = instance_variable_get("@#{name}")
         Metro2.numeric_to_metro2(val, required_length, is_monetary)
       end
     end
@@ -79,18 +79,18 @@ module Metro2
 
       # getter
       define_method name do
-        instance_variable_get( "@#{name}" )
+        instance_variable_get("@#{name}")
       end
 
       # setter (includes validations)
       define_method "#{name}=" do | val |
-        instance_variable_set( "@#{name}", val )
+        instance_variable_set("@#{name}", val)
       end
 
       # to_metro2
-      define_method  "#{name}_to_metro2" do
+      define_method "#{name}_to_metro2" do
         # Right justified and zero-filled
-        val = instance_variable_get( "@#{name}" )
+        val = instance_variable_get("@#{name}")
         val = val.strftime('%m%d%Y') if val
         Metro2.numeric_to_metro2(val, 8, false)
       end
@@ -101,18 +101,18 @@ module Metro2
 
       # getter
       define_method name do
-        instance_variable_get( "@#{name}" )
+        instance_variable_get("@#{name}")
       end
 
       # setter (includes validations)
       define_method "#{name}=" do | val |
-        instance_variable_set( "@#{name}", val )
+        instance_variable_set("@#{name}", val)
       end
 
       # to_metro2
-      define_method  "#{name}_to_metro2" do
+      define_method "#{name}_to_metro2" do
         # Right justified and zero-filled
-        val = instance_variable_get( "@#{name}" )
+        val = instance_variable_get("@#{name}")
         val = val.strftime('%m%d%Y%H%M%S') if val
         Metro2.numeric_to_metro2(val, 14, false)
       end
