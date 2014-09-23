@@ -9,7 +9,6 @@ describe Metro2::Records::HeaderSegment do
     @header.activity_date = Date.new(2014,9,14)
     @header.created_date = Date.new(2014,9,15)
     @header.program_date = Date.new(2014,9,1)
-    @header.program_revision_date = '01'
     @header.reporter_name = 'Credit Reporter'
     @header.reporter_address = '123 Report Dr Address CA 91111'
     @header.reporter_telephone_number = '5555555555'

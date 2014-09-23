@@ -12,7 +12,7 @@ module Metro2::Records
     date_field :activity_date
     date_field :created_date
     date_field :program_date
-    numeric_field :program_revision_date, 8
+    date_field :program_revision_date
     alphanumeric_field :reporter_name, 40
     alphanumeric_field :reporter_address, 96, Metro2::ALPHANUMERIC_PLUS_DOT_DASH_SLASH
     numeric_field :reporter_telephone_number, 10

@@ -91,7 +91,12 @@ module Metro2
       define_method "#{name}_to_metro2" do
         # Right justified and zero-filled
         val = instance_variable_get("@#{name}")
-        val = val.strftime('%m%d%Y') if val
+        if val
+          val = val.strftime('%m%d%Y')
+        elsif name == :program_revision_date || name == :last_payment_date
+          val = '01'
+        end
+
         Metro2.numeric_to_metro2(val, 8, false)
       end
     end
