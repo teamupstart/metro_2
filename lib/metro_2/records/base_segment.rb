@@ -45,7 +45,7 @@ module Metro2::Records
     alphanumeric_field :country_code, 2
     alphanumeric_field :address_1, 32, Metro2::ALPHANUMERIC_PLUS_DOT_DASH_SLASH
     alphanumeric_field :address_2, 32, Metro2::ALPHANUMERIC_PLUS_DOT_DASH_SLASH
-    alphanumeric_field :city, 20
+    alphanumeric_field :city, 20, Metro2::ALPHANUMERIC_PLUS_DOT_DASH_SLASH
     alphanumeric_field :state, 2
     alphanumeric_field :postal_code, 9
     alphanumeric_field :address_indicator, 1
