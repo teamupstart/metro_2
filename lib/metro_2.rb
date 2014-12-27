@@ -2,12 +2,142 @@ require 'metro_2/version'
 
 module Metro2
 
+  PORTFOLIO_TYPE = {
+    line_of_credit: 'C',
+    installment: 'I',
+    mortgage: 'M',
+    open_account: 'O',
+    revolving: 'R'
+  }
+
+  ACCOUNT_TYPE = {
+    unsecured: '01',
+    education: '12'
+    # TODO: add other account types
+  }
+
+  ECOA_CODE = {
+    individual: '1'
+    # TODO: add other ECOA codes
+  }
+
+  INTEREST_TYPE_INDICATOR = {
+    fixed: 'F',
+    variable: 'V'
+  }
+
+  TERMS_FREQUENCY = {
+    deferred: 'D',
+    single_payment: 'P',
+    weekly: 'W',
+    biweekly: 'B',
+    semimonthly: 'S',
+    monthly: 'M',
+    bimonthly: 'L',
+    quarterly: 'Q',
+    triannually: 'T',
+    semiannually: 'S',
+    annually: 'Y'
+  }
+
+  ACCOUNT_STATUS = {
+    account_transferred: '05',
+    current: '11',
+    closed: '13',
+    paid_in_full_voluntary_surrender: '61',
+    paid_in_full_collection_account: '62',
+    paid_in_full_repossession: '63',
+    paid_in_full_charge_off: '64',
+    paid_in_full_foreclosure: '65',
+    past_due_30_59: '71',
+    past_due_60_89: '78',
+    past_due_90_119: '80',
+    past_due_120_149: '82',
+    past_due_150_179: '83',
+    past_due_180_plus: '84',
+    govt_insurance_claim_filed: '88',
+    deed_received: '89',
+    collections: '93',
+    foreclosure_completed: '94',
+    voluntary_surrender: '95',
+    merch_repossessed: '96',
+    charge_off: '97',
+    delete_account: 'DA',
+    delete_account_fraud: 'DF'
+  }
+
+  PAYMENT_HISTORY_PROFILE = {
+    current: '0',
+    past_due_30_59: '1',
+    past_due_60_89: '2',
+    past_due_90_119: '3',
+    past_due_120_149: '4',
+    past_due_150_179: '5',
+    past_due_180_plus: '6',
+    no_history_prior: 'B',
+    no_history_available: 'D',
+    zero_balance: 'E',
+    collection: 'G',
+    foreclosure_completed: 'H',
+    voluntary_surrender: 'J',
+    repossession: 'K',
+    charge_off: 'L'
+  }
+
+  CONSUMER_TRANSACTION_TYPE = {
+    new_account_or_new_borrower: '1',
+    name_change: '2',
+    address_change: '3',
+    ssn_change: '5',
+    name_and_address_change: '6',
+    name_and_ssn_change: '8',
+    address_and_ssn_change: '9',
+    name_address_and_ssn_change: 'A'
+  }
+
+  ADDRESS_INDICATOR = {
+    confirmed: 'C',
+    known: 'Y',
+    not_confirmed: 'N',
+    military: 'M',
+    secondary: 'S',
+    business: 'B',
+    non_deliverable: 'U',
+    data_reporters_default: 'D',
+    bill_payer_service: 'P'
+  }
+
+  RESIDENCE_CODE = {
+    owns: 'O',
+    rents: 'R'
+  }
+
+  GENERATION_CODE = {
+    junior: 'J',
+    senior: 'S',
+    ii: '2',
+    iii: '3',
+    iv: '4',
+    v: '5',
+    vi: '6',
+    vii: '7',
+    viii: '8',
+    ix: '9'
+  }
+
   ALPHANUMERIC = /\A([[:alnum:]]|\s)+\z/
   ALPHANUMERIC_PLUS_DASH = /\A([[:alnum:]]|\s|\-)+\z/
   ALPHANUMERIC_PLUS_DOT_DASH_SLASH = /\A([[:alnum:]]|\s|\-|\.|\\|\/)+\z/
   NUMERIC = /\A\d+\.?\d*\z/
 
   FIXED_LENGTH = 426
+
+  def self.account_status_needs_payment_rating?(account_status)
+    account_status.in?([ACCOUNT_STATUS[:account_transferred], ACCOUNT_STATUS[:closed],
+                        ACCOUNT_STATUS[:paid_in_full_foreclosure], ACCOUNT_STATUS[:govt_insurance_claim_filed],
+                        ACCOUNT_STATUS[:deed_received], ACCOUNT_STATUS[:foreclosure_completed],
+                        ACCOUNT_STATUS[:voluntary_surrender]])
+  end
 
   def self.alphanumeric_to_metro2(val, required_length, permitted_chars)
     # Left justified and blank-filled
