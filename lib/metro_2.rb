@@ -8,23 +8,23 @@ module Metro2
     mortgage: 'M',
     open_account: 'O',
     revolving: 'R'
-  }
+  }.freeze
 
   ACCOUNT_TYPE = {
     unsecured: '01',
     education: '12'
     # TODO: add other account types
-  }
+  }.freeze
 
   ECOA_CODE = {
     individual: '1'
     # TODO: add other ECOA codes
-  }
+  }.freeze
 
   INTEREST_TYPE_INDICATOR = {
     fixed: 'F',
     variable: 'V'
-  }
+  }.freeze
 
   TERMS_FREQUENCY = {
     deferred: 'D',
@@ -38,7 +38,7 @@ module Metro2
     triannually: 'T',
     semiannually: 'S',
     annually: 'Y'
-  }
+  }.freeze
 
   ACCOUNT_STATUS = {
     account_transferred: '05',
@@ -64,7 +64,7 @@ module Metro2
     charge_off: '97',
     delete_account: 'DA',
     delete_account_fraud: 'DF'
-  }
+  }.freeze
 
   PAYMENT_HISTORY_PROFILE = {
     current: '0',
@@ -82,7 +82,7 @@ module Metro2
     voluntary_surrender: 'J',
     repossession: 'K',
     charge_off: 'L'
-  }
+  }.freeze
 
   CONSUMER_TRANSACTION_TYPE = {
     new_account_or_new_borrower: '1',
@@ -93,7 +93,7 @@ module Metro2
     name_and_ssn_change: '8',
     address_and_ssn_change: '9',
     name_address_and_ssn_change: 'A'
-  }
+  }.freeze
 
   ADDRESS_INDICATOR = {
     confirmed: 'C',
@@ -105,12 +105,12 @@ module Metro2
     non_deliverable: 'U',
     data_reporters_default: 'D',
     bill_payer_service: 'P'
-  }
+  }.freeze
 
   RESIDENCE_CODE = {
     owns: 'O',
     rents: 'R'
-  }
+  }.freeze
 
   GENERATION_CODE = {
     junior: 'J',
@@ -123,7 +123,7 @@ module Metro2
     vii: '7',
     viii: '8',
     ix: '9'
-  }
+  }.freeze
 
   ALPHANUMERIC = /\A([[:alnum:]]|\s)+\z/
   ALPHANUMERIC_PLUS_DASH = /\A([[:alnum:]]|\s|\-)+\z/
