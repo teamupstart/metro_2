@@ -21,6 +21,14 @@ module Metro2
     # TODO: add other ECOA codes
   }.freeze
 
+  SPECIAL_COMMENT_CODE = {
+    partial_payment_agreement: 'AC',
+    paid_in_full_less_than_full_balance: 'AU',
+    loan_modified: 'CO',
+    forbearance: 'CP'
+    # TODO: add other special comment codes
+  }.freeze
+
   INTEREST_TYPE_INDICATOR = {
     fixed: 'F',
     variable: 'V'
