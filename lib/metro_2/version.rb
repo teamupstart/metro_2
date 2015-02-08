@@ -1,5 +1,5 @@
 module Metro2
-  VERSION = "1.1.1"
+  VERSION = "1.1.2"
 
   def self.version_string
     str = VERSION.split('.')
