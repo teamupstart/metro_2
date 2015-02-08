@@ -34,6 +34,8 @@ module Metro2
     variable: 'V'
   }.freeze
 
+  CORRECTION_INDICATOR = '1'
+
   TERMS_FREQUENCY = {
     deferred: 'D',
     single_payment: 'P',
