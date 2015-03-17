@@ -135,6 +135,25 @@ module Metro2
     ix: '9'
   }.freeze
 
+  CONSUMER_INFORMATION_INDICATOR = {
+    petition_ch7: 'A',
+    petition_ch11: 'B',
+    petition_ch12: 'C',
+    petition_ch13: 'D',
+    discharged_ch7: 'E',
+    discharged_ch11: 'F',
+    discharged_ch12: 'G',
+    discharged_ch13: 'H',
+    dismissed_ch7: 'I',
+    dismissed_ch11: 'J',
+    dismissed_ch12: 'K',
+    dismissed_ch13: 'L',
+    withdrawn_ch7: 'M',
+    withdrawn_ch11: 'N',
+    withdrawn_ch12: 'O',
+    withdrawn_ch13: 'P',
+  }
+
   ALPHANUMERIC = /\A([[:alnum:]]|\s)+\z/
   ALPHANUMERIC_PLUS_DASH = /\A([[:alnum:]]|\s|\-)+\z/
   ALPHANUMERIC_PLUS_DOT_DASH_SLASH = /\A([[:alnum:]]|\s|\-|\.|\\|\/)+\z/
