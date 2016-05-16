@@ -17,7 +17,7 @@ module Metro2
       # to_metro2
       define_method "#{name}_to_metro2" do
         val = instance_variable_get("@#{name}")
-        Metro2.alphanumeric_to_metro2(val, required_length, permitted_chars)
+        Metro2.alphanumeric_to_metro2(val, required_length, permitted_chars, name)
       end
     end
 
@@ -52,7 +52,7 @@ module Metro2
       # to_metro2
 
       define_method "#{name}_to_metro2" do
-        Metro2.alphanumeric_to_metro2(val, required_length, permitted_chars)
+        Metro2.alphanumeric_to_metro2(val, required_length, permitted_chars, name)
       end
     end
 
