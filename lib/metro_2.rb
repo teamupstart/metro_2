@@ -169,14 +169,14 @@ module Metro2
                         ACCOUNT_STATUS[:voluntary_surrender]])
   end
 
-  def self.alphanumeric_to_metro2(val, required_length, permitted_chars)
+  def self.alphanumeric_to_metro2(val, required_length, permitted_chars, name)
     # Left justified and blank-filled
     val = val.to_s
 
     return ' ' * required_length  if val.empty?
 
     unless !!(val =~ permitted_chars)
-      raise ArgumentError.new("Content (#{val}) contains invalid characters")
+      raise ArgumentError.new("Content (#{val}) contains invalid characters in field '#{name}'")
     end
 
     if val.size > required_length
