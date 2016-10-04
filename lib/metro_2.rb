@@ -30,6 +30,11 @@ module Metro2
     # TODO: add other special comment codes
   }.freeze
 
+  COMPLIANCE_CONDITION_CODE = {
+    in_dispute: 'XF'
+    # TODO: add other compliance condition codes
+  }.freeze
+
   INTEREST_TYPE_INDICATOR = {
     fixed: 'F',
     variable: 'V'
