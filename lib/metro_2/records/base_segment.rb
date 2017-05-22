@@ -2,7 +2,7 @@ module Metro2::Records
   class BaseSegment < Record
     @fields = []
 
-    numeric_const_field :record_descriptor_word, 4, Metro2::FIXED_LENGTH
+    numeric_field :record_descriptor_word, 4, Metro2::FIXED_LENGTH
     alphanumeric_const_field :processing_indicator, 1, 1 # always 1
     timestamp_field :time_stamp
     numeric_field :correction_indicator, 1
@@ -50,5 +50,25 @@ module Metro2::Records
     alphanumeric_field :postal_code, 9
     alphanumeric_field :address_indicator, 1
     alphanumeric_field :residence_code, 1
+
+    def joint_segment=(joint_segment)
+      @joint_segment = joint_segment
+    end
+
+    def joint_segment
+      @joint_segment
+    end
+
+    def to_metro2
+      if joint_segment
+        joint_segment_to_metro2 = joint_segment.to_metro2
+      end
+
+      if joint_segment_to_metro2
+        self.class.fields.collect { |f| send("#{f}_to_metro2") }.join + joint_segment_to_metro2
+      else
+        self.class.fields.collect { |f| send("#{f}_to_metro2") }.join
+      end
+    end
   end
 end
