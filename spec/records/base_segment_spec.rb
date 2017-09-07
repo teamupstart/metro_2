@@ -90,9 +90,90 @@ describe Metro2::Records::BaseSegment do
         'O',
         ''
       ]
+      @base.record_descriptor_word = 426
       base_str = @base.to_metro2
       expect(base_str).to eql(exp.join(''))
       expect(base_str.size).to eql(Metro2::FIXED_LENGTH)
+    end
+
+    it 'should generate base segment along with the joint segment' do
+      joint_segment = Metro2::Records::J1Segment.new
+      joint_segment.surname = 'Simpson'
+      joint_segment.first_name = 'Homer'
+      joint_segment.middle_name = 'Jay'
+      joint_segment.social_security_number = '333224444'
+      joint_segment.date_of_birth = Date.new(1987, 4, 19)
+      joint_segment.telephone_number = '5555555555'
+      joint_segment.ecoa_code = 1
+
+      @base.joint_segment = joint_segment
+      exp = [
+        '0526',
+        '1',
+        '09152014170745',
+        '0',
+        'REPORTERXYZ'.ljust(20, ' '),
+        '1 ',
+        'ABC123'.ljust(30, ' '),
+        'I',
+        '01',
+        '04012013',
+        '0' * 9,
+        '000025000',
+        '36 ',
+        'M',
+        '000000817',
+        '000000817',
+        '11',
+        ' ',
+        '00000000000000000BBBBBBB',
+        '  ',
+        '  ',
+        '000011111',
+        '000000000',
+        '000000000',
+        '09012014',
+        '00000000',
+        '00000000',
+        '08012014',
+        'F',
+        ' ' * 16,
+        ' ',
+        'Simpson'.ljust(25, ' '),
+        'Homer'.ljust(20, ' '),
+        'Jay'.ljust(20, ' '),
+        ' ',
+        '333224444',
+        '04191987',
+        '5555555555',
+        '1',
+        '  ',
+        'US',
+        '742 Evergreen Terrace'.ljust(32, ' '),
+        ' ' * 32,
+        'Springfield'.ljust(20, ' '),
+        'IL',
+        '54321    ',
+        'N',
+        'O',
+        '',
+        'J1',
+        ' ',
+        'Simpson'.ljust(25, ' '),
+        'Homer'.ljust(20, ' '),
+        'Jay'.ljust(20, ' '),
+        ' ',
+        '333224444',
+        '04191987',
+        '5555555555',
+        '1',
+        '  ',
+        ' '
+      ]
+      @base.record_descriptor_word = 526
+      base_str = @base.to_metro2
+      expect(base_str).to eql(exp.join(''))
+      expect(base_str.size).to eql(526)
     end
   end
 
