@@ -26,7 +26,8 @@ module Metro2
     partial_payment_agreement: 'AC',
     paid_in_full_less_than_full_balance: 'AU',
     loan_modified: 'CO',
-    forbearance: 'CP'
+    forbearance: 'CP',
+    affected_by_natural_or_declared_disaster: 'AW'
     # TODO: add other special comment codes
   }.freeze
 
