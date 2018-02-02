@@ -24,10 +24,11 @@ module Metro2
 
   SPECIAL_COMMENT_CODE = {
     partial_payment_agreement: 'AC',
+    purchased_by_another_company: 'AH',
     paid_in_full_less_than_full_balance: 'AU',
+    affected_by_natural_or_declared_disaster: 'AW',
     loan_modified: 'CO',
     forbearance: 'CP',
-    affected_by_natural_or_declared_disaster: 'AW'
     # TODO: add other special comment codes
   }.freeze
 
