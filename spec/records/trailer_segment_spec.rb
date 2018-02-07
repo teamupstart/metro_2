@@ -10,6 +10,7 @@ describe Metro2::Records::TrailerSegment do
     @trailer.total_date_of_births = 1
     @trailer.total_date_of_births_in_base = 1
     @trailer.total_telephome_numbers = 1
+    @trailer.total_k2_segments = 1
   end
 
   describe '#to_metro2' do
@@ -48,7 +49,7 @@ describe Metro2::Records::TrailerSegment do
         '0' * 9,
         '0' * 9,
         '0' * 9,
-        '0' * 9,
+        '000000001',
         '0' * 9,
         '0' * 9,
         '0' * 9,
