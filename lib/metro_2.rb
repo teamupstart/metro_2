@@ -193,7 +193,12 @@ module Metro2
     end
   end
 
-  def self.numeric_to_metro2(val, required_length, is_monetary)
+  def self.numeric_to_metro2(val, required_length,
+                             is_monetary: false, name: nil, possible_values: nil)
+    unless possible_values.nil? || possible_values.include?(val)
+      raise ArgumentError.new("field #{name} has unsupported value: #{val}")
+    end
+
     # Right justified and zero-filled
     val = val.to_s
 
