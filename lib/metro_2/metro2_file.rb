@@ -29,6 +29,7 @@ module Metro2
       num_dob = 0
       num_telephone = 0
       num_ecoa_code_z = 0
+      total_k2_segments = 0
 
       @base_segments.each do |base|
         status_code_count[base.account_status.upcase] += 1
@@ -36,6 +37,7 @@ module Metro2
         num_dob += 1 if base.date_of_birth
         num_telephone += 1 if base.telephone_number
         num_ecoa_code_z += 1 if base.ecoa_code == 'Z'
+        total_k2_segments += 1 if base.k2_segment
       end
 
       trailer = Records::TrailerSegment.new
@@ -69,6 +71,7 @@ module Metro2
       trailer.total_date_of_births = num_dob
       trailer.total_date_of_births_in_base = num_dob
       trailer.total_telephome_numbers = num_telephone
+      trailer.total_k2_segments = total_k2_segments
       trailer
     end
 
