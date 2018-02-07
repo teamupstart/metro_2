@@ -162,6 +162,13 @@ module Metro2
     withdrawn_ch13: 'P',
   }
 
+  # K2 Segment constants
+  PURCHASED_FROM_SOLD_TO_INDICATOR = {
+    purchased_from: 1,
+    sold_to: 2,
+    remove_previous: 9
+  }.freeze
+
   ALPHANUMERIC = /\A([[:alnum:]]|\s)+\z/
   ALPHANUMERIC_PLUS_DASH = /\A([[:alnum:]]|\s|\-)+\z/
   ALPHANUMERIC_PLUS_DOT_DASH_SLASH = /\A([[:alnum:]]|\s|\-|\.|\\|\/)+\z/
