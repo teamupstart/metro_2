@@ -1,8 +1,10 @@
 module Metro2::Records
   class BaseSegment < Record
+    LENGTH = Metro2::FIXED_LENGTH
+
     @fields = []
 
-    numeric_const_field :record_descriptor_word, 4, Metro2::FIXED_LENGTH
+    numeric_field :record_descriptor_word, 4
     alphanumeric_const_field :processing_indicator, 1, 1 # always 1
     timestamp_field :time_stamp
     numeric_field :correction_indicator, 1
@@ -50,5 +52,28 @@ module Metro2::Records
     alphanumeric_field :postal_code, 9
     alphanumeric_field :address_indicator, 1
     alphanumeric_field :residence_code, 1
+
+    def initialize
+      @appendages = []
+    end
+
+    def k2_segment
+      @k2_segment
+    end
+
+    def k2_segment=(segment)
+      @k2_segment = segment
+      @appendages << @k2_segment
+    end
+
+    def to_metro2
+      @appendages.compact!
+      set_record_descriptor_word
+      super + @appendages.map(&:to_metro2).join
+    end
+
+    def set_record_descriptor_word
+      self.record_descriptor_word = LENGTH + @appendages.sum { |appendage| appendage.class::LENGTH }
+    end
   end
 end

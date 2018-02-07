@@ -35,11 +35,14 @@ describe Metro2::Records::BaseSegment do
     @base.postal_code = '54321'
     @base.address_indicator = 'N'
     @base.residence_code = 'O'
+    @base.k2_segment = k2_segment
   end
 
+  let(:k2_segment) { nil }
+
   context '#to_metro2' do
-    it 'should generate base segment string' do
-      exp = [
+    let(:expected) do
+      [
         '0426',
         '1',
         '09152014170745',
@@ -90,9 +93,27 @@ describe Metro2::Records::BaseSegment do
         'O',
         ''
       ]
+    end
+
+    it 'should generate base segment string' do
       base_str = @base.to_metro2
-      expect(base_str).to eql(exp.join(''))
+      expect(base_str).to eql(expected.join(''))
       expect(base_str.size).to eql(Metro2::FIXED_LENGTH)
+    end
+
+    context 'with a K2 segment' do
+      let(:k2_segment) do
+        k2 = Metro2::Records::K2Segment.new
+        k2.purchased_from_sold_to_indicator = 9
+        k2
+      end
+
+      it 'should output the k2 segment in its string and update set_record_descriptor_word' do
+        base_str = @base.to_metro2
+        expected_length = Metro2::Records::BaseSegment::LENGTH + Metro2::Records::K2Segment::LENGTH
+        expect(base_str.size).to eql(expected_length)
+        expect(base_str[0..3].to_i).to eql(expected_length)
+      end
     end
   end
 
