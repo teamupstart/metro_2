@@ -33,7 +33,8 @@ module Metro2
   }.freeze
 
   COMPLIANCE_CONDITION_CODE = {
-    in_dispute: 'XF'
+    in_dispute: 'XB',
+    previously_in_dispute_now_resolved: 'XH',
     # TODO: add other compliance condition codes
   }.freeze
 
