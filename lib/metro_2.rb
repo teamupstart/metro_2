@@ -18,7 +18,8 @@ module Metro2
 
   ECOA_CODE = {
     individual: '1',
-    deceased: 'X'
+    deceased: 'X',
+    delete: 'Z'
     # TODO: add other ECOA codes
   }.freeze
 
