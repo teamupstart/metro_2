@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 module Metro2
-  VERSION = "1.2.3"
+  VERSION = '1.2.4'
 
   def self.version_string
     str = VERSION.split('.')
