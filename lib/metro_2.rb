@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require 'metro_2/version'
 
 module Metro2
-
   PORTFOLIO_TYPE = {
     line_of_credit: 'C',
     installment: 'I',
@@ -11,6 +12,7 @@ module Metro2
   }.freeze
 
   ACCOUNT_TYPE = {
+    auto: '00',
     unsecured: '01',
     education: '12'
     # TODO: add other account types
@@ -24,18 +26,25 @@ module Metro2
   }.freeze
 
   SPECIAL_COMMENT_CODE = {
+    election_of_remedy: 'I',
+    paid_through_insurance: 'AB',
     partial_payment_agreement: 'AC',
     purchased_by_another_company: 'AH',
+    voluntarily_surrendered: 'AO',
     paid_in_full_less_than_full_balance: 'AU',
     affected_by_natural_or_declared_disaster: 'AW',
+    redeemed_or_reinstated_repossession: 'AZ',
+    involuntary_repossession: 'BI',
+    involuntary_repossession_obligation_satisfied: 'BJ',
+    involuntary_repossession_balance_owing: 'BK',
     loan_modified: 'CO',
-    forbearance: 'CP',
+    forbearance: 'CP'
     # TODO: add other special comment codes
   }.freeze
 
   COMPLIANCE_CONDITION_CODE = {
     in_dispute: 'XB',
-    previously_in_dispute_now_resolved: 'XH',
+    previously_in_dispute_now_resolved: 'XH'
     # TODO: add other compliance condition codes
   }.freeze
 
@@ -161,8 +170,8 @@ module Metro2
     withdrawn_ch7: 'M',
     withdrawn_ch11: 'N',
     withdrawn_ch12: 'O',
-    withdrawn_ch13: 'P',
-  }
+    withdrawn_ch13: 'P'
+  }.freeze
 
   # K2 Segment constants
   PURCHASED_FROM_SOLD_TO_INDICATOR = {
@@ -171,10 +180,10 @@ module Metro2
     remove_previous: 9
   }.freeze
 
-  ALPHANUMERIC = /\A([[:alnum:]]|\s)+\z/
-  ALPHANUMERIC_PLUS_DASH = /\A([[:alnum:]]|\s|\-)+\z/
-  ALPHANUMERIC_PLUS_DOT_DASH_SLASH = /\A([[:alnum:]]|\s|\-|\.|\\|\/)+\z/
-  NUMERIC = /\A\d+\.?\d*\z/
+  ALPHANUMERIC = /\A([[:alnum:]]|\s)+\z/.freeze
+  ALPHANUMERIC_PLUS_DASH = /\A([[:alnum:]]|\s|\-)+\z/.freeze
+  ALPHANUMERIC_PLUS_DOT_DASH_SLASH = %r{\A([[:alnum:]]|\s|\-|\.|\\|/)+\z}.freeze
+  NUMERIC = /\A\d+\.?\d*\z/.freeze
 
   FIXED_LENGTH = 426
 
@@ -189,14 +198,14 @@ module Metro2
     # Left justified and blank-filled
     val = val.to_s
 
-    return ' ' * required_length  if val.empty?
+    return ' ' * required_length if val.empty?
 
     unless !!(val =~ permitted_chars)
-      raise ArgumentError.new("Content (#{val}) contains invalid characters in field '#{name}'")
+      raise ArgumentError, "Content (#{val}) contains invalid characters in field '#{name}'"
     end
 
     if val.size > required_length
-      val[0..(required_length-1)]
+      val[0..(required_length - 1)]
     else
       val + (' ' * (required_length - val.size))
     end
@@ -205,7 +214,7 @@ module Metro2
   def self.numeric_to_metro2(val, required_length,
                              is_monetary: false, name: nil, possible_values: nil)
     unless possible_values.nil? || possible_values.include?(val)
-      raise ArgumentError.new("field #{name} has unsupported value: #{val}")
+      raise ArgumentError, "field #{name} has unsupported value: #{val}"
     end
 
     # Right justified and zero-filled
@@ -213,17 +222,15 @@ module Metro2
 
     return '0' * required_length if val.empty?
 
-    unless !!(val =~ Metro2::NUMERIC)
-      raise ArgumentError.new("field (#{val}) must be numeric")
-    end
+    raise ArgumentError, "field (#{val}) must be numeric" unless !!(val =~ Metro2::NUMERIC)
 
     decimal_index = val.index('.')
     val = val[0..(decimal_index - 1)] if decimal_index
 
     # any value above 1 billion gets set to 999,999,999
-    return '9' * required_length if is_monetary && val.to_f >= 1000000000
+    return '9' * required_length if is_monetary && val.to_f >= 1_000_000_000
     if val.size > required_length
-      raise ArgumentError.new("numeric field (#{val}) is too long (max #{required_length})")
+      raise ArgumentError, "numeric field (#{val}) is too long (max #{required_length})"
     end
 
     ('0' * (required_length - val.size)) + val
@@ -237,5 +244,5 @@ require 'metro_2/metro2_file'
 require 'metro_2/records/record'
 
 Dir.new(File.dirname(__FILE__) + '/metro_2/records').each do |file|
-  require('metro_2/records/' + File.basename(file)) if File.extname(file) == ".rb"
+  require('metro_2/records/' + File.basename(file)) if File.extname(file) == '.rb'
 end
