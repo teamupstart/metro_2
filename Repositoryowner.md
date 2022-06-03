@@ -1,4 +1,4 @@
 # Repository Ownership
-Repository Owner - @teamupstart/
+Repository Owner - @teamupstart/borrower-squad
 
 Slack Channel ID - C08UGTUG1
