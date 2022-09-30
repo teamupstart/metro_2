@@ -36,9 +36,11 @@ describe Metro2::Records::BaseSegment do
     @base.address_indicator = 'N'
     @base.residence_code = 'O'
     @base.k2_segment = k2_segment
+    @base.j2_segment = j2_segment
   end
 
   let(:k2_segment) { nil }
+  let(:j2_segment) { nil }
 
   context '#to_metro2' do
     let(:expected) do
@@ -111,6 +113,29 @@ describe Metro2::Records::BaseSegment do
       it 'should output the k2 segment in its string and update set_record_descriptor_word' do
         base_str = @base.to_metro2
         expected_length = Metro2::Records::BaseSegment::LENGTH + Metro2::Records::K2Segment::LENGTH
+        expect(base_str.size).to eql(expected_length)
+        expect(base_str[0..3].to_i).to eql(expected_length)
+      end
+    end
+
+    context 'with a J2 segment' do
+      let(:j2_segment) do
+        j2 = Metro2::Records::J2Segment.new
+        j2.surname = "Business Name"
+        j2.social_security_number = '333224444'
+        j2.date_of_birth = Date.new(1987, 4, 19)
+        j2.ecoa_code = 'W'
+        j2.country_code = 'US'
+        j2.address_1 = '742 Evergreen Terrace'
+        j2.city = 'Springfield'
+        j2.state = 'IL'
+        j2.postal_code = '54321'
+        j2
+      end
+
+      it 'should output the j2 segment in its string and update set_record_descriptor_word' do
+        base_str = @base.to_metro2
+        expected_length = Metro2::Records::BaseSegment::LENGTH + Metro2::Records::J2Segment::LENGTH
         expect(base_str.size).to eql(expected_length)
         expect(base_str[0..3].to_i).to eql(expected_length)
       end

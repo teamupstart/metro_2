@@ -14,14 +14,17 @@ module Metro2
   ACCOUNT_TYPE = {
     auto: '00',
     unsecured: '01',
-    education: '12'
+    education: '12',
+    business_individual_personally_liable: '10'
     # TODO: add other account types
   }.freeze
 
   ECOA_CODE = {
     individual: '1',
     deceased: 'X',
-    delete: 'Z'
+    delete: 'Z',
+    comaker_or_guarantor: '5',
+    business: 'W'
     # TODO: add other ECOA codes
   }.freeze
 
