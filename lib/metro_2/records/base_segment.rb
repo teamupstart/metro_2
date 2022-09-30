@@ -61,9 +61,18 @@ module Metro2::Records
       @k2_segment
     end
 
+    def j2_segment
+      @j2_segment
+    end
+
     def k2_segment=(segment)
       @k2_segment = segment
       @appendages << @k2_segment
+    end
+
+    def j2_segment=(segment)
+      @j2_segment = segment
+      @appendages << @j2_segment
     end
 
     def to_metro2
