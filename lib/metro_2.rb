@@ -173,7 +173,10 @@ module Metro2
     withdrawn_ch7: 'M',
     withdrawn_ch11: 'N',
     withdrawn_ch12: 'O',
-    withdrawn_ch13: 'P'
+    withdrawn_ch13: 'P',
+    dismissed: 'Q',
+    reaffirmed: 'R',
+    reaffirmation_rescinded: 'V'
   }.freeze
 
   # K2 Segment constants
