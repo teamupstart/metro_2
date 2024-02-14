@@ -14,6 +14,7 @@ module Metro2
   ACCOUNT_TYPE = {
     auto: '00',
     unsecured: '01',
+    secured: '02',
     education: '12',
     business_individual_personally_liable: '10'
     # TODO: add other account types
