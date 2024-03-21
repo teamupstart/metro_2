@@ -33,6 +33,7 @@ base_segment.identification_number = 'REPORTERXYZ'
 base_segment.cycle_number = 1
 base_segment.consumer_account_number = 'ABC123'
 base_segment.portfolio_type = 'I'
+base_segment.account_status = '11'
 # ... other base segment attributes
 metro_2_content.base_segments << base_segment
 # add more base segments as needed
