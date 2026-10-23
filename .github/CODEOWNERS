@@ -1,0 +1,13 @@
+# Dependency manifests and lockfiles require Infosec review
+# Third party dependency checks
+Gemfile                 @teamupstart/infosec
+Gemfile.lock            @teamupstart/infosec
+yarn.lock               @teamupstart/infosec
+package.json            @teamupstart/infosec
+requirements.in         @teamupstart/infosec
+requirements.txt        @teamupstart/infosec
+Pipfile                 @teamupstart/infosec
+Pipfile.lock            @teamupstart/infosec
+poetry.lock             @teamupstart/infosec
+versions.properties     @teamupstart/infosec
+**/.yarn/cache/**       @teamupstart/infosec
