@@ -48,8 +48,9 @@ module Metro2
 
   COMPLIANCE_CONDITION_CODE = {
     in_dispute: 'XB',
-    previously_in_dispute_now_resolved: 'XH'
-    # TODO: add other compliance condition codes
+    previously_in_dispute_now_resolved: 'XH',
+    voided: 'XR',
+    findings_contested: 'XC'
   }.freeze
 
   INTEREST_TYPE_INDICATOR = {

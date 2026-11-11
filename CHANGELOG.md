@@ -2,6 +2,9 @@
 
 Metro_2 gem versions
 
+# 1.2.8
+1. Adds more compliance condition codes
+
 # 1.2.7
 1. A code for secured loans added to the account type
 
